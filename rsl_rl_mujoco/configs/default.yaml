@@ -1,29 +1,39 @@
 env:
-  id: "HalfCheetah-v5"
-  num_envs: 4
-  clip_actions: 1.0
-  is_finite_horizon: true
+  id: "Humanoid-v5"
+  num_envs: 8            # CPU 下一般也能跑起来；4→8 提升数据多样性
+  clip_actions: 1.0      # MuJoCo humanoid 原生动作界 [-1, 1]，保持 1.0
+  is_finite_horizon: false  # 保持 false，但务必修好 time_outs
 
 train:
-  num_steps_per_env: 1000
-  num_learning_iterations: 400
+  num_steps_per_env: 2048     # 8 env × 2048 = 16384 样本/迭代，很稳
+  num_learning_iterations: 1000000
   save_interval: 50
-  empirical_normalization: false
-  
+  empirical_normalization: true
+  checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/Humanoid-v5/sota_model_1500.pt'
+  visualize: False
+
   algorithm:
     class_name: "PPO"
+    value_loss_coef: 0.5       # ↓ 一点，避免过分拉扯 critic（修好 time_outs 后可再调回 1.0）
+    use_clipped_value_loss: True
     clip_param: 0.2
-    entropy_coef: 0.01
-    num_learning_epochs: 4
-    num_mini_batches: 4
-    learning_rate: 0.001
+    entropy_coef: 0.001        # 从 0.01 → 0.001，抑制方差暴走（稳定后可逐步减到 0 或 0.0005）
+    num_learning_epochs: 10    # Humanoid 常用 5~10；数据量增加后 10 更充分
+    num_mini_batches: 32       # 16384 / 32 = 512 的 minibatch，梯度更稳
+    learning_rate: 0.0003      # 从 1e-3 降到 3e-4（配合自适应 KL）
+    schedule: 'adaptive'
     gamma: 0.99
     lam: 0.95
-  
+    desired_kl: 0.02           # 稍放宽（0.01→0.02），避免过度保守
+    max_grad_norm: 1.0
+
   policy:
+    init_noise_std: 0.5        # 从 0.8 → 0.5，降低初期抖动
+    actor_hidden_dims: [256, 256]
+    critic_hidden_dims: [256, 256]
     class_name: "ActorCritic"
     activation: "elu"
-    hidden_dims: [64, 64]
+
 
 device: "cpu"
 log_dir: "./logs"
