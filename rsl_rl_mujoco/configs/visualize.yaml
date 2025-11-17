@@ -1,17 +1,26 @@
 # Visualization configuration
 env:
-  id: "HalfCheetah-v5"  # MuJoCo environment ID
+  # id: "HalfCheetah-v5"  # MuJoCo environment ID
+  id: "Humanoid-v5"  # MuJoCo environment ID
   render_mode: "human"  # "human", "rgb_array", or None
-  width: 1280          # Render window width
-  height: 720          # Render window height
+  clip_actions: 1.0      # MuJoCo humanoid 原生动作界 [-1, 1]，保持 1.0
+  is_finite_horizon: false  # 保持 false，但务必修好 time_outs
+  # render_mode: "None"  # "human", "rgb_array", or None
+  width: 1920          # Render window width
+  height: 1080          # Render window height
 
 policy:
-  checkpoint: "logs/model_400.pt"  # Path to trained policy
+  checkpoint: "model_Humanoid-v5/model_1500.pt"   # 你的模型路径
+  class_name: "ActorCritic"
   activation: "elu"
-  hidden_dims: [64, 64]
+  actor_hidden_dims: [256, 256]
+  critic_hidden_dims: [256, 256]
 
 visualization:
   num_episodes: 10     # Number of episodes to run
-  speedup: 0.1         # Simulation speed multiplier (1.0 = real-time)
+  speedup: 0.01         # Simulation speed multiplier (1.0 = real-time)
   record_video: False  # Save video to files
   video_dir: "videos"  # Where to save recordings
+
+
+device: "cpu"
