@@ -1,7 +1,10 @@
 # Visualization configuration
 env:
-  # id: "HalfCheetah-v5"  # MuJoCo environment ID
-  id: "Humanoid-v5"  # MuJoCo environment ID
+  # id: "Humanoid-v5"
+  id: "HumanoidStandup-v5"
+  # id: "Swimmer-v5"
+  # id: "HalfCheetah-v4"
+
   render_mode: "human"  # "human", "rgb_array", or None
   clip_actions: 1.0      # MuJoCo humanoid 原生动作界 [-1, 1]，保持 1.0
   is_finite_horizon: false  # 保持 false，但务必修好 time_outs
@@ -10,7 +13,11 @@ env:
   height: 1080          # Render window height
 
 policy:
-  checkpoint: "model_Humanoid-v5/model_1500.pt"   # 你的模型路径
+  # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Humanoid-v5/model_1500.pt'
+  checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HumanoidStandup-v5/model_8550.pt'
+  # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Swimmer-v5/model_1300.pt'
+  # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HalfCheetah-v4/model_1650.pt'
+  
   class_name: "ActorCritic"
   activation: "elu"
   actor_hidden_dims: [256, 256]

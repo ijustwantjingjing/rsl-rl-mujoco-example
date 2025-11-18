@@ -79,7 +79,7 @@ class PolicyVisualizer:
         ).to(self.device)
 
         # Load checkpoint
-        checkpoint = torch.load(self.cfg["policy"]["checkpoint"])
+        checkpoint = torch.load(self.cfg["policy"]["checkpoint_path"])
         self.policy.load_state_dict(checkpoint["model_state_dict"])
 
         # 加载观测标准化器（关键步骤）
@@ -89,7 +89,7 @@ class PolicyVisualizer:
         self.obs_normalizer.eval()  # 切换到评估模式（不再更新统计量）
 
         self.policy.eval()
-        print(f"Loaded policy from {self.cfg['policy']['checkpoint']}")
+        print(f"Loaded policy from {self.cfg['policy']['checkpoint_path']}")
 
     def run(self):
         """Run visualization loop"""
