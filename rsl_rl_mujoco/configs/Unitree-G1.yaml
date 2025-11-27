@@ -1,0 +1,42 @@
+env:
+  id: "Unitree-G1"
+  # num_envs: 1
+  num_envs: 256
+  is_finite_horizon: false
+
+train:
+  num_steps_per_env: 24       # from LeggedRobotCfgPPO.runner
+  num_learning_iterations: 1000000   # G1RoughCfgPPO.runner.max_iterations
+  save_interval: 50
+  empirical_normalization: True
+  checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Unitree-g1/model_25900.pt'
+  # visualize: True
+  visualize: False
+
+  algorithm:
+    class_name: "PPO"          # LeggedRobotCfgPPO.runner.algorithm_class_name
+    value_loss_coef: 1.0
+    use_clipped_value_loss: True
+    clip_param: 0.2
+    entropy_coef: 0.01         # overwritten by G1RoughCfgPPO.algorithm
+    num_learning_epochs: 5
+    num_mini_batches: 4
+    learning_rate: 0.001
+    schedule: "adaptive"
+    gamma: 0.99
+    lam: 0.95
+    desired_kl: 0.01
+    max_grad_norm: 1.0
+
+  policy:
+    class_name: "ActorCriticRecurrent"  # G1RoughCfgPPO.runner
+    init_noise_std: 0.8
+    actor_hidden_dims: [32]
+    critic_hidden_dims: [32]
+    activation: "elu"
+    rnn_type: "lstm"
+    rnn_hidden_size: 64
+    rnn_num_layers: 1
+
+device: "cpu"
+log_dir: "./logs"

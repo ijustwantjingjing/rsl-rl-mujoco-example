@@ -3,11 +3,11 @@ env:
   # id: "Humanoid-v5"
   # id: "HumanoidStandup-v5"
   # id: "Swimmer-v5"
-  id: "HalfCheetah-v4"
-  # id: "Unitree-G1"
+  # id: "HalfCheetah-v4"
+  id: "Unitree-G1"
 
   render_mode: "human"  # "human", "rgb_array", or None
-  clip_actions: 1.0      # MuJoCo humanoid 原生动作界 [-1, 1]，保持 1.0
+  clip_actions: 100.0      # MuJoCo humanoid 原生动作界 [-1, 1]，保持 1.0
   is_finite_horizon: false  # 保持 false，但务必修好 time_outs
   # render_mode: "None"  # "human", "rgb_array", or None
   width: 1920          # Render window width
@@ -17,13 +17,18 @@ policy:
   # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Humanoid-v5/model_1500.pt'
   # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HumanoidStandup-v5/model_8550.pt'
   # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Swimmer-v5/model_1300.pt'
-  checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HalfCheetah-v4/model_1650.pt'
-  # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Unitree-g1/model_1500.pt'
+  # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HalfCheetah-v4/model_1650.pt'
+  checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Unitree-g1/model_25983.pt'
   
-  class_name: "ActorCritic"
+  class_name: "ActorCriticRecurrent"  # G1RoughCfgPPO.runner
+  init_noise_std: 0.8
+  actor_hidden_dims: [32]
+  critic_hidden_dims: [32]
   activation: "elu"
-  actor_hidden_dims: [256, 256]
-  critic_hidden_dims: [256, 256]
+  rnn_type: "lstm"
+  rnn_hidden_size: 64
+  rnn_num_layers: 1
+
 
 visualization:
   num_episodes: 10     # Number of episodes to run

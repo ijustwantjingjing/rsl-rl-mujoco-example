@@ -1,10 +1,10 @@
 env:
   # id: "Humanoid-v5"
-  id: "HumanoidStandup-v5"
+  # id: "HumanoidStandup-v5"
   # id: "Swimmer-v5"
   # id: "HalfCheetah-v4"
+  id: "Unitree-G1"
 
-  # id: "Unitree-G1"
   num_envs: 8            # CPU 下一般也能跑起来；4→8 提升数据多样性
   clip_actions: 1.0      # MuJoCo humanoid 原生动作界 [-1, 1]，保持 1.0
   is_finite_horizon: false  # 保持 false，但务必修好 time_outs
@@ -15,7 +15,7 @@ train:
   save_interval: 50
   empirical_normalization: True
   # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Humanoid-v5/model_1500.pt'
-  checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HumanoidStandup-v5/model_8550.pt'
+  # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HumanoidStandup-v5/model_8550.pt'
   # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_Swimmer-v5/model_1300.pt'
   # checkpoint_path: '/home/user/Documents/rsl-rl-mujoco-example/model_HalfCheetah-v4/model_1650.pt'
   # visualize: False
